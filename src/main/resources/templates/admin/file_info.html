@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <h5>수정하기</h5>
+    <form th:action="@{/files/{id}(id=${file.id})}" method="post" enctype="multipart/form-data">
+        <!-- 기본정보 입력 -->
+<!--        <input type="text" name="title" placeholder="title">-->
+        <div>
+            <label>열 수:</label>
+            <input type="number" name="rowCnt" placeholder="rowCount">
+        </div>
+        <!-- 엑셀 파일 입력 -->
+        <label for="file">수정한 엑셀 파일:</label>
+        <input type="file" id="file" name="file" accept=".xlsx,.xls" required>
+        <!-- 제출 버튼 -->
+        <button type="submit">업로드</button>
+    </form>
+    <br>
+    <h1>"
+        <span th:text="${file.testName}"></span>" 에 대한 조회 결과입니다.
+    </h1>
+    <table>
+        <tr>
+            <th>학년</th><th>반</th><th>번호</th><th th:each="value : ${menu.values}" th:text="${value}"></th>
+        </tr>
+        <tr th:each="score : ${scores}">
+            <td><p th:text="${score.grade}"></p></td>
+            <td><p th:text="${score.cls}"></p></td>
+            <td><p th:text="${score.num}"></p></td>
+            <td th:each="value : ${score.values}" th:text="${value}"></td>
+        </tr>
+    </table>
+</body>
+</html>

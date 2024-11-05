@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HOME</title>
+</head>
+<body>
+    <h1>Login</h1>
+    <form th:action="@{/auth/login}" method="post">
+<!--        controller 전 spring security 를 거침 -> UsernamePasswordAuthenticationFilter-->
+<!--        th action을 써야한다-->
+        <input type="text" name="username" placeholder="username">
+        <input type="pasword" name="password" placeholder="password">
+        <input type="submit" value = "로그인">
+    </form>
+</body>
+</html>

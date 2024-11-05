@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div th:if="${score == null}">
+        <p>정보에 해당하는 성적을 조회할 수 없습니다</p>
+    </div>
+    <div th:unless="${score == null}">
+        <table>
+            <tr>
+                <th>학년</th>
+                <th>반</th>
+                <th>번호</th>
+                <th th:each="value : ${menu.values}" th:text="${value}"></th>
+            </tr>
+            <tr>
+                <td><p th:text="${score.grade}"></p></td>
+                <td><p th:text="${score.cls}"></p></td>
+                <td><p th:text="${score.num}"></p></td>
+                <td th:each="value : ${score.values}" th:text="${value}"></td>
+            </tr>
+        </table>
+    </div>
+    <a href="/">홈으로</a>
+</body>
+</html>

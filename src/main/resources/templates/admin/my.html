@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <form th:action="@{/files}" method="post" enctype="multipart/form-data">
+        <!-- 기본정보 입력 -->
+        <input type="text" name="title" placeholder="title">
+        <input type="number" name="rowCnt" placeholder="rowCount">
+        <!-- 엑셀 파일 입력 -->
+        <label for="file">엑셀 파일:</label>
+        <input type="file" id="file" name="file" accept=".xlsx,.xls" required>
+        <!-- 제출 버튼 -->
+        <button type="submit">업로드</button>
+    </form>
+    <table>
+        <tr>
+            <th>번호</th> <th>시험이름</th> <th>업로드</th> <th>값조회</th>
+        </tr>
+        <tr th:each="file : ${files}">
+            <td><p th:text="${file.testName}"></p></td>
+            <td><p th:text="${#temporals.format(file.createTime, 'yy/MM/dd ahh:mm')}"></p></td>
+            <td><a th:href="@{/files/{id}(id=${file.id})}"></p> 값조회</a></td> <!--||를 통해 스트링 합성 가능-> pathVariable사용-->
+        </tr>
+    </table>
+</body>
+</html>
