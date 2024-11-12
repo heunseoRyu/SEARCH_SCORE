@@ -12,5 +12,6 @@ public record StudentScore(
         String grade,
         String cls,
         String num,
-        List<String> values) {
+        List<String> values,
+        boolean isCheck) {
 }

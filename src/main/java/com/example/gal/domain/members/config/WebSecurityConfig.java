@@ -13,6 +13,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
 import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.PATCH;
 import static org.springframework.http.HttpMethod.POST;
 
 @Configuration
@@ -40,12 +41,14 @@ public class WebSecurityConfig {
                                 new AntPathRequestMatcher("/auth/join"),
                                 new AntPathRequestMatcher("/")
                         ).permitAll()
-                        .requestMatchers("/admin/**").hasAuthority("ADMIN")
-                        .requestMatchers(POST,"/files").hasAuthority("ADMIN")
-                        .requestMatchers(POST,"/files/{id}").hasAuthority("ADMIN")
-                        .requestMatchers(GET,"/files/{id}").hasAuthority("ADMIN")
-                        .anyRequest()
-                        .authenticated())
+                        .requestMatchers("/admin/**").hasAuthority("ADMIN") // "/admin" 이하 모든 요청은 ADMIN 권한 필요
+                        .requestMatchers(HttpMethod.POST, "/files").hasAuthority("ADMIN") // POST 요청 /files는 ADMIN 권한 필요
+                        .requestMatchers(HttpMethod.GET,"/files/{id}/remove").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.GET,"files/search").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/files/{id}").hasAuthority("ADMIN") // POST 요청 /files/{id}는 ADMIN 권한 필요
+                        .requestMatchers(HttpMethod.GET, "/files/{id}/scores/{key}").hasAuthority("STUDENT") // PATCH 요청 /files/{id}/scores/{key}는 STUDENT 권한 필요
+                        .requestMatchers(HttpMethod.GET, "/files/{id}").hasAuthority("ADMIN") // GET 요청 /files/{id}는 ADMIN 권한 필요
+                        .anyRequest().authenticated())
                 .formLogin(formLogin -> formLogin
                         .loginPage("/auth/login")
                         .defaultSuccessUrl("/"))

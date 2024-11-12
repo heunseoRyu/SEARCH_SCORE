@@ -8,14 +8,14 @@
     <title>Document</title>
 </head>
 <body>
+    <a href="/">홈으로</a><br> <a href="/admin/my">이전으로</a> <br>
     <h5>수정하기</h5>
     <form th:action="@{/files/{id}(id=${file.id})}" method="post" enctype="multipart/form-data">
         <!-- 기본정보 입력 -->
 <!--        <input type="text" name="title" placeholder="title">-->
-        <div>
-            <label>열 수:</label>
-            <input type="number" name="rowCnt" placeholder="rowCount">
-        </div>
+        <input type="number" name="rowCnt" placeholder="열의 수(학년,반,번호 포함해서 계산)">
+        <input type="number" name="year" placeholder="년도(예:2024)">
+        <input type="number" name="term" placeholder="학기(1 or 2입력)">
         <!-- 엑셀 파일 입력 -->
         <label for="file">수정한 엑셀 파일:</label>
         <input type="file" id="file" name="file" accept=".xlsx,.xls" required>
@@ -28,12 +28,16 @@
     </h1>
     <table>
         <tr>
-            <th>학년</th><th>반</th><th>번호</th><th th:each="value : ${menu.values}" th:text="${value}"></th>
+            <th>학년</th><th>반</th><th>번호</th><th>확인여부</th><th th:each="value : ${menu.values}" th:text="${value}"></th>
         </tr>
         <tr th:each="score : ${scores}">
             <td><p th:text="${score.grade}"></p></td>
             <td><p th:text="${score.cls}"></p></td>
             <td><p th:text="${score.num}"></p></td>
+            <td>
+                <p th:if="${score.isCheck}">확인</p>
+                <p th:if="${!score.isCheck}">미확인</p>
+            </td>
             <td th:each="value : ${score.values}" th:text="${value}"></td>
         </tr>
     </table>

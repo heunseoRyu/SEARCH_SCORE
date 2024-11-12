@@ -38,6 +38,10 @@ public class File {
 
     private Integer menuKey;
 
+    private Integer term;
+
+    private Integer year;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_member_id")
     private Member member;

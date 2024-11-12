@@ -17,16 +17,27 @@
                 <th>학년</th>
                 <th>반</th>
                 <th>번호</th>
+                <th>확인</th>
                 <th th:each="value : ${menu.values}" th:text="${value}"></th>
             </tr>
             <tr>
                 <td><p th:text="${score.grade}"></p></td>
                 <td><p th:text="${score.cls}"></p></td>
                 <td><p th:text="${score.num}"></p></td>
+                <td>
+                    <a th:if="${!score.isCheck}"
+                       th:href="@{/files/{id}/scores/{key}(id=${file.id}, key=${score.key})}">
+                        확인
+                    </a>
+                    <p th:if="${score.isCheck}">확정됨</p>
+                </td>
                 <td th:each="value : ${score.values}" th:text="${value}"></td>
             </tr>
         </table>
+        <h1 th:if="${!score.isCheck}">'확인'을 클릭해서 결과를 확정지으세요.</h1>
     </div>
+    <a href="/files">다른 성적조회</a> <br>
     <a href="/">홈으로</a>
+
 </body>
 </html>

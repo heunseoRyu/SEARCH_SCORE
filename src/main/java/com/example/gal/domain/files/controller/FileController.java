@@ -7,10 +7,12 @@ import com.example.gal.domain.files.service.FileService;
 import com.example.gal.domain.files.usecase.FileUseCase;
 import com.example.gal.domain.members.domain.Member;
 import com.example.gal.domain.members.service.MemberService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,21 +36,35 @@ public class FileController {
             @RequestParam("title") String title,
             @RequestParam("rowCnt") Integer rowCnt,
             @RequestParam("file") MultipartFile file,
+            @RequestParam("term") Integer term,
+            @RequestParam("year") Integer year,
             Principal principal
     ) {
-        fileUseCase.register(title,rowCnt,file,principal.getName());
+        fileUseCase.register(title,rowCnt,term,year,file,principal.getName());
         return "redirect:/admin/my";
     }
 
     @PostMapping("/{id}")
-    public String uploadFile(
+    public String modifyFile(
             @PathVariable("id") Long id,
             @RequestParam("rowCnt") Integer rowCnt,
             @RequestParam("file") MultipartFile file,
+            @RequestParam("term") Integer term,
+            @RequestParam("year") Integer year,
             Principal principal
     ) {
-        fileUseCase.modify(id,rowCnt,file,principal.getName());
+        fileUseCase.modify(id,rowCnt,file,term,year,principal.getName());
         return "redirect:/admin/my";
+    }
+
+    @GetMapping("/search")
+    public String search(
+            @RequestParam("year") Integer year,
+            @RequestParam("term") Integer term,
+            Model model
+    ){
+        model.addAttribute("files",fileService.getFilesByYearAndTerm(year,term));
+        return "/files";
     }
 
     @GetMapping("/{id}")
@@ -77,12 +93,37 @@ public class FileController {
         Member member = memberService.getMember(principal.getName());
         File file = fileService.getFileById(id);
 
+        model.addAttribute("file",file);
+
         StudentScore score = fileUseCase.getMyResult(member,file);
         model.addAttribute("score",score);
 
         StudentScore menu = fileUseCase.getMenu(file);
         model.addAttribute("menu",menu);
         return "my_result";
+    }
+
+    @GetMapping("/{id}/scores/{key}")
+    public String modifyIsCheck(
+            @PathVariable("id") Long id,
+            @PathVariable("key") Integer key
+    ){
+        fileUseCase.modifyIsCheck(id,key);
+        return "redirect:/files/"+ id.toString() +"/result";
+    }
+
+    @GetMapping("/{id}/remove")
+    public String remove(
+            @PathVariable("id") Long id
+    ){
+        fileUseCase.remove(id);
+        return "redirect:/admin/my";
+    }
+
+    @GetMapping("/form")
+    public String form(HttpServletResponse response){
+        fileUseCase.getForm(response);
+        return "redirect:/admin/my";
     }
 
 }

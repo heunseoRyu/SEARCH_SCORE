@@ -14,6 +14,7 @@ import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -32,21 +33,20 @@ public class FileService {
     private final MongoTemplate mongoTemplate;
     private final MemberRepository memberRepository;
 
-    public void saveExcel(String collectionName,MultipartFile file,Integer rowCnt,String username) {
+    public void saveExcel(String collectionName,MultipartFile file,Integer rowCnt,Integer term,Integer year,String username) {
         // 1. 성적 저장
         mongoTemplate.createCollection(collectionName);
-        saveScore(file,collectionName,rowCnt,username);
+        saveScore(file,term,year,collectionName,rowCnt,username);
     }
 
-    private void saveScore(MultipartFile file, String collectionName, Integer rowCnt,String username) {
-        List<StudentScore> scores = extractScores(file, rowCnt,collectionName,username);
+    private void saveScore(MultipartFile file, Integer term,Integer year,String collectionName, Integer rowCnt,String username) {
+        List<StudentScore> scores = extractScores(term,year,file, rowCnt,collectionName,username);
         for (StudentScore score : scores)
             mongoTemplate.save(score, collectionName);
     }
 
-    private List<StudentScore> extractScores(MultipartFile file, Integer rowCnt,String collectionName,String username) {
+    private List<StudentScore> extractScores(Integer term,Integer year,MultipartFile file, Integer rowCnt,String collectionName,String username) {
         List<StudentScore> scores = new ArrayList<>();
-        ObjectId menuObjectId;
 
         Member member = memberRepository.findByUsername(username).orElse(null);
 
@@ -74,11 +74,12 @@ public class FileService {
                             .grade(grade)
                             .cls(cls)
                             .num(num)
-                            .values(additionalData).build();
+                            .values(additionalData)
+                            .isCheck(false).build();
 
                     if(i == 0){
                         mongoTemplate.save(studentScore,collectionName);
-                        saveFile(file,i,collectionName,member);
+                        saveFile(term,year,file,i,collectionName,member);
                     }else {
                         scores.add(studentScore);
                     }
@@ -93,9 +94,11 @@ public class FileService {
     }
 
     // 2. 시험이름, 생성일 저장
-    public void saveFile(MultipartFile file,Integer id,String testName,Member member) {
+    public void saveFile(Integer term,Integer year,MultipartFile file,Integer id,String testName,Member member) {
         System.out.println(testName);
         fileRepository.save(File.builder()
+                        .term(term)
+                        .year(year)
                 .fileName(file.getOriginalFilename())
                         .menuKey(id)
                 .createTime(LocalDateTime.now())
@@ -110,10 +113,6 @@ public class FileService {
 
     public List<File> getMyFiles(Member member) {
         return fileRepository.findAllByMember(member);
-    }
-
-    public void getFileInfo(Long id) {
-
     }
 
     public StudentScore getFileMenu(File file) {
@@ -159,5 +158,27 @@ public class FileService {
         // 동적으로 filename에 해당하는 컬렉션을 조회하고 쿼리 실행
         StudentScore result = mongoTemplate.findOne(query, StudentScore.class, testName);
         return result;
+    }
+
+    public void modifyScoresToChecked(File file, Integer key) {
+        // 쿼리 조건 생성
+        Query query = new Query();
+        query.addCriteria(Criteria.where("key").is(key));
+
+        // 업데이트할 필드 설정
+        Update update = new Update();
+        update.set("isCheck", true);
+
+        // 데이터 업데이트
+        mongoTemplate.updateFirst(query, update, file.getTestName());
+        System.out.println("완료");
+    }
+
+    public List<File> getMyFilesByYearAndTerm(Member member,Integer year, Integer term) {
+        return fileRepository.findAllByMemberAndYearAndTerm(member,year,term);
+    }
+
+    public List<File> getFilesByYearAndTerm(Integer year, Integer term) {
+        return fileRepository.findAllByYearAndTerm(year,term);
     }
 }

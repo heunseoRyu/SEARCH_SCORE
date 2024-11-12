@@ -13,4 +13,9 @@ public interface FileRepository extends JpaRepository<File,Long> {
     @EntityGraph(attributePaths = {"member"})
     List<File> findAllByMember(Member member);
 
+    @EntityGraph(attributePaths = {"member"})
+    List<File> findAllByMemberAndYearAndTerm(Member member, Integer year, Integer term);
+
+    @EntityGraph(attributePaths = {"member"})
+    List<File> findAllByYearAndTerm(Integer year, Integer term);
 }
