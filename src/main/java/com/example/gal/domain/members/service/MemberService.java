@@ -18,8 +18,9 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public AddMemberResponse addMember(AddMemberRequest request) {
+    public AddMemberResponse addMember(AddMemberRequest request) throws IllegalArgumentException {
         String encodedPassword = passwordEncoder.encode(request.getPassword());
+        if(memberRepository.findByGradeAndClsAndNum(request.getGrade(),request.getCls(), request.getNum())) throw new IllegalArgumentException();
         return new AddMemberResponse(memberRepository.save(request.toEntity(encodedPassword)));
     }
 

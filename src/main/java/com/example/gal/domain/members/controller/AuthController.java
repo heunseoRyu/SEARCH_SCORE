@@ -41,6 +41,9 @@ public class AuthController {
         }catch (DataIntegrityViolationException e) {
             result.reject("duplicated", "사용중인 Username입니다.");
             return "join";
+        }catch(IllegalArgumentException ignored){
+            result.reject("duplicated", "사용중인 학번입니다.");
+            return "join";
         }catch (Exception e) {
             result.reject("error", e.getMessage());
             return "join";
