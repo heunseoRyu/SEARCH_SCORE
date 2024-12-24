@@ -7,6 +7,9 @@
 </head>
 <body>
     <h1>Login</h1>
+    <div th:if="${session.errorMessage}" class="alert alert-danger" style="text-align: center;">
+        <p th:text="${session.errorMessage}"></p>
+    </div>
     <form th:action="@{/auth/login}" method="post">
 <!--        controller 전 spring security 를 거침 -> UsernamePasswordAuthenticationFilter-->
 <!--        th action을 써야한다-->
@@ -15,6 +18,7 @@
         <input type="submit" value = "로그인">
     </form>
     <a href="/change-pw">비밀번호 바꾸기</a>
+    <a href="/auth/join">회원가입</a>
     <a href="/">홈으로</a>
 </body>
 </html>

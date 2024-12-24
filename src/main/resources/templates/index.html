@@ -8,16 +8,23 @@
   <link rel="stylesheet" th:href="@{/css/i.css}" />
 </head>
 <body>
-<h1>Home</h1>
+<h1>대소마고 성적조회 사이트입니다.</h1>
+<p>
+  3가지 목표를 갖고 있습니다. <br>
+  1. 빠른 성적조회 <br>
+  2. 종이 서명과정 생략 <br>
+  3. 개인성적 유출 방지 <br>
+  made by 칠판당면 <br>
+</p>
 <div sec:authorize="isAnonymous()">
-  <a href="/auth/login">로그인</a>
-  <a href="/auth/join">회원가입</a>
+  <a href="/auth/login" class="id1">로그인</a>
+  <a href="/auth/join" class="id1">회원가입</a>
 </div>
 <div class="container sec-authorize" sec:authorize="isAuthenticated()">
-  <a href="/files">성적 조회</a>
-  <a href="/admin/my" th:if="${isAdmin} or ${isTeacher}">선생님 페이지</a>
-  <a href="/users" th:if="${isAdmin} or ${isTeacher}">유저리스트</a>
-  <a href="/all" th:if="${isAdmin}">모든 평가</a>
+  <a href="/files">결과 조회(학생)</a>
+  <a href="/admin/my" th:if="${isAdmin} or ${isTeacher}">나의 게시물 관리</a>
+  <a href="/users" th:if="${isAdmin} or ${isTeacher}">회원관리</a>
+  <a href="/all" th:if="${isAdmin}">모든 게시물 관리</a>
   <a href="/auth/logout" id="logout-button">로그아웃</a>
 </div>
 </body>

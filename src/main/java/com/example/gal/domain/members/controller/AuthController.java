@@ -42,6 +42,10 @@ public class AuthController {
         if (result.hasErrors()) { //valid 에 이러가 없으면
             return "join";
         }
+        if(!Objects.equals(request.getPassword(),request.getPassword2())) {
+            result.reject("pwNotSame","새 비번과 확인란의 값이 동일하지 않습니다.");
+            return "change-pw";
+        }
         try {
             memberService.addMember(request);
         }catch (DataIntegrityViolationException e) {

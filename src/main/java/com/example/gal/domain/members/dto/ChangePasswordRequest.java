@@ -16,9 +16,11 @@ public class ChangePasswordRequest {
     private String password1;
 
     @NotBlank(message = "새 비밀번호을 입력하세요.")
+    @Size(min=3, max=30, message = "비밀번호는 3자~20자 입니다.")
     private String password2;
 
     @NotBlank(message = "비밀번호를 한번 더 입력하세요.")
+    @Size(min=3, max=30, message = "비밀번호는 3자~20자 입니다.")
     private String password3;
 
 }

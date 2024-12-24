@@ -20,6 +20,10 @@ public class AddMemberRequest {
     @Size(min=3, max=30, message = "비밀번호는 3자~20자 입니다.")
     private String password;
 
+    @NotEmpty(message = "비밀번호를 한번 더 입력하세요")
+    @Size(min=3, max=30, message = "비밀번호는 3자~20자 입니다.")
+    private String password2;
+
     private Integer grade;
 
     private Integer cls;

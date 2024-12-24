@@ -55,7 +55,12 @@ public class WebSecurityConfig {
                         .anyRequest().authenticated())
                 .formLogin(formLogin -> formLogin
                         .loginPage("/auth/login")
-                        .defaultSuccessUrl("/"))
+                        .defaultSuccessUrl("/")
+                        .failureHandler((request, response, exception) -> {
+                            // 로그인 실패 시 커스텀 로직
+                            request.getSession().setAttribute("errorMessage", exception.getMessage());
+                            response.sendRedirect("/auth/login?error=true");
+                        }))
                 .logout(logout -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/auth/logout")) //AntPathRequestMatcher: 특정 엔드포인트만 인증없이! 접근 가능하게.
                         //logoutFilter operate //post요청만 처리: logoutUrl / 모든 요청처리 : logoutRequestMatcher
