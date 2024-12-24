@@ -9,17 +9,9 @@
     <link rel="stylesheet" th:href="@{/css/files.css}"/>
 </head>
 <body>
-<a href="/">홈으로</a> <br>
 <table>
-    <h3>내가 올린 평가결과들 </h3>
-    <br>
-    <form th:action="@{/admin/my/search}" method="get" enctype="multipart/form-data">
-        <input type="number" name="year" placeholder="년도(예:2024)">
-        <input type="number" name="term" placeholder="학기(1 or 2입력)">
-        <!-- 제출 버튼 -->
-        <button type="submit">검색</button>
-        <a href="/admin/my">검색초기화</a> <br>
-    </form>
+    <a href="/">홈으로</a>
+    <h3>현재 올라온 모든 평가</h3>
     <tr>
         <th>평가명</th><th>년도</th><th>학기</th><th>생성일</th><th>값조회</th><th>삭제</th>
     </tr>
@@ -32,6 +24,5 @@
         <td><a th:href="@{/files/{id}/remove(id=${file.id})}">삭제</a></td>
     </tr>
 </table>
-<button th:onclick="|location.href='@{|/files/upload|}'|">평가 업로드</button> 평가결과를 업로드하세요!<br>
 </body>
 </html>

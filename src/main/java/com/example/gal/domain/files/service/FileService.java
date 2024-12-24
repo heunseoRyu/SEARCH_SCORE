@@ -10,7 +10,6 @@ import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -33,19 +32,19 @@ public class FileService {
     private final MongoTemplate mongoTemplate;
     private final MemberRepository memberRepository;
 
-    public void saveExcel(String collectionName,MultipartFile file,Integer rowCnt,Integer term,Integer year,String username) {
+    public void saveExcel(String collectionName,MultipartFile file,Integer term,Integer year,String username) {
         // 1. 성적 저장
         mongoTemplate.createCollection(collectionName);
-        saveScore(file,term,year,collectionName,rowCnt,username);
+        saveScore(file,term,year,collectionName,username);
     }
 
-    private void saveScore(MultipartFile file, Integer term,Integer year,String collectionName, Integer rowCnt,String username) {
-        List<StudentScore> scores = extractScores(term,year,file, rowCnt,collectionName,username);
+    private void saveScore(MultipartFile file, Integer term,Integer year,String collectionName,String username) {
+        List<StudentScore> scores = extractScores(term,year,file,collectionName,username);
         for (StudentScore score : scores)
             mongoTemplate.save(score, collectionName);
     }
 
-    private List<StudentScore> extractScores(Integer term,Integer year,MultipartFile file, Integer rowCnt,String collectionName,String username) {
+    private List<StudentScore> extractScores(Integer term,Integer year,MultipartFile file,String collectionName,String username) {
         List<StudentScore> scores = new ArrayList<>();
 
         Member member = memberRepository.findByUsername(username).orElse(null);
@@ -64,7 +63,7 @@ public class FileService {
 
                     // List<String> 형태로 나머지 정보를 저장
                     List<String> additionalData = new ArrayList<>();
-                    for (int j = 3; j < rowCnt; j++) { // rowCnt + 1 (X)
+                    for (int j = 3; j < row.getLastCellNum(); j++) { // rowCnt + 1 (X)
                         additionalData.add(formatter.formatCellValue(row.getCell(j)));
                     }
 
@@ -112,7 +111,7 @@ public class FileService {
     }
 
     public List<File> getMyFiles(Member member) {
-        return fileRepository.findAllByMember(member);
+        return fileRepository.findAllByMemberOrderByIdDesc(member);
     }
 
     public StudentScore getFileMenu(File file) {
@@ -141,11 +140,11 @@ public class FileService {
 
     public void deleteScores(String testName) {
         // testName 컬렉션의 모든 데이터를 삭제
-        mongoTemplate.remove(new Query(), testName);
+        mongoTemplate.dropCollection(testName);
     }
 
     public List<File> getFiles() {
-        return fileRepository.findAll();
+        return fileRepository.findAllOrderByIdDesc();
     }
 
     public StudentScore getMyResult(Integer grade, Integer cls, Integer num, String testName) {
@@ -175,10 +174,10 @@ public class FileService {
     }
 
     public List<File> getMyFilesByYearAndTerm(Member member,Integer year, Integer term) {
-        return fileRepository.findAllByMemberAndYearAndTerm(member,year,term);
+        return fileRepository.findAllByMemberAndYearAndTermOrderByIdDesc(member,year,term);
     }
 
     public List<File> getFilesByYearAndTerm(Integer year, Integer term) {
-        return fileRepository.findAllByYearAndTerm(year,term);
+        return fileRepository.findAllByYearAndTermOrderByIdDesc(year,term);
     }
 }

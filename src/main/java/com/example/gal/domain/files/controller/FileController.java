@@ -34,26 +34,24 @@ public class FileController {
     @PostMapping("")
     public String uploadFile(
             @RequestParam("title") String title,
-            @RequestParam("rowCnt") Integer rowCnt,
             @RequestParam("file") MultipartFile file,
             @RequestParam("term") Integer term,
             @RequestParam("year") Integer year,
             Principal principal
     ) {
-        fileUseCase.register(title,rowCnt,term,year,file,principal.getName());
+        fileUseCase.register(title,term,year,file,principal.getName());
         return "redirect:/admin/my";
     }
 
     @PostMapping("/{id}")
     public String modifyFile(
             @PathVariable("id") Long id,
-            @RequestParam("rowCnt") Integer rowCnt,
             @RequestParam("file") MultipartFile file,
             @RequestParam("term") Integer term,
             @RequestParam("year") Integer year,
             Principal principal
     ) {
-        fileUseCase.modify(id,rowCnt,file,term,year,principal.getName());
+        fileUseCase.modify(id,file,term,year,principal.getName());
         return "redirect:/admin/my";
     }
 
@@ -118,6 +116,11 @@ public class FileController {
     ){
         fileUseCase.remove(id);
         return "redirect:/admin/my";
+    }
+
+    @GetMapping("/upload")
+    public String upload(){
+        return "/admin/upload";
     }
 
     @GetMapping("/form")

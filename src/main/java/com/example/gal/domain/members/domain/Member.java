@@ -39,6 +39,8 @@ public class Member {
 
     private Integer num;
 
+    private boolean isAllowed;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private MemberRole authority;

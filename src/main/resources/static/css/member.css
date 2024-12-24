@@ -1,0 +1,27 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+}
+
+h1 {
+    color: #333; /* 제목 색상 */
+    text-align: center; /* 중앙 정렬 */
+    margin-bottom: 20px; /* 아래쪽 여백 추가 */
+}
+
+h3 {
+    color: #007bff; /* 사용자 이름 색상 */
+    text-align: center; /* 중앙 정렬 */
+    margin: 10px 0; /* 위아래 여백 추가 */
+}
+
+div {
+    max-width: 400px; /* div 최대 너비 설정 */
+    margin: 0 auto; /* 중앙 정렬 */
+    padding: 20px;
+    background-color: #fff; /* 배경색 */
+    border-radius: 5px; /* 모서리 둥글게 */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* 그림자 효과 */
+}

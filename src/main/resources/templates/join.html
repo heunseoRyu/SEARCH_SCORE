@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>HOME</title>
+    <link rel="stylesheet" th:href="@{/css/join.css}"/>
 </head>
 <body>
     <h1>JOIN</h1>
@@ -12,12 +13,13 @@
         </div>
         <!--BindingResult 안 에러를 뷰로 출력-->
         <!--addMemberRequest 형식으로 보냄-->
-        <input type="text" th:field="*{username}" placeholder="username">
-        <input type="password" th:field="*{password}" placeholder="password">
-        <input type="number" th:field="*{grade}" placeholder="grade">
-        <input type="number" th:field="*{cls}" placeholder="cls">
-        <input type="number" th:field="*{num}" placeholder="num">
+        <input type="text" th:field="*{username}" placeholder="아이디">
+        <input type="password" th:field="*{password}" placeholder="비밀번호">
+        <input type="number" th:field="*{grade}" placeholder="학년">
+        <input type="number" th:field="*{cls}" placeholder="반">
+        <input type="number" th:field="*{num}" placeholder="번호">
         <input type="submit" value="회원가입">
     </form>
+    <a href="/">홈으로</a>
 </body>
 </html>

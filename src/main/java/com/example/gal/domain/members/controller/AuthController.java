@@ -1,15 +1,21 @@
 package com.example.gal.domain.members.controller;
 
 import com.example.gal.domain.members.dto.AddMemberRequest;
+import com.example.gal.domain.members.dto.ChangePasswordRequest;
 import com.example.gal.domain.members.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.Objects;
 
 @Controller
 @RequiredArgsConstructor
@@ -50,6 +56,30 @@ public class AuthController {
         }
         return "redirect:/"; //index
     } //db에 추가
+
+    @PostMapping("/change-pw")
+    public String changePassword(
+            @Valid ChangePasswordRequest request,
+            BindingResult result
+    ){
+        if (result.hasErrors()) { //valid 에 이러가 없으면
+            return "change-pw";
+        }
+        if(!Objects.equals(request.getPassword3(), request.getPassword2())){
+            result.reject("pwNotSame","새 비번과 확인란의 값이 동일하지 않습니다.");
+            return "change-pw";
+        }
+        try{
+            memberService.changePw(request.getUsername(),request.getPassword1(),request.getPassword2());
+        }catch(IllegalArgumentException ignored){
+            result.reject("notfound", "아이디와 일치하는 계정을 찾을 수 없음.");
+            return "change-pw";
+        }catch(DataIntegrityViolationException ignored){
+            result.reject("notAllowed", "비밀번호가 틀림.");
+            return "change-pw";
+        }
+        return "login";
+    }
 
 }
 

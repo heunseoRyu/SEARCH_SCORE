@@ -30,21 +30,21 @@ public class FileUseCase {
     private final FileService fileService;
     private final FileRepository fileRepository;
 
-    public void register(String title, Integer rowCnt, Integer term,Integer year,MultipartFile file,String username) {
+    public void register(String title, Integer term,Integer year,MultipartFile file,String username) {
         // 1. 최초 저장하는 시험인지 확인
         if(fileService.checkIsValidFile(title)) {
             System.out.println("이미 존재하는 시험입니다.");
         }
         // 2. file 저장
        else {
-           fileService.saveExcel(title,file,rowCnt,term,year,username);
+           fileService.saveExcel(title,file,term,year,username);
         }
     }
 
-    public void modify(Long id, Integer rowCnt, MultipartFile file,Integer term,Integer year, String username) {
+    public void modify(Long id, MultipartFile file,Integer term,Integer year, String username) {
         File fileEntity = fileService.getFileById(id);
         fileService.deleteScores(fileEntity.getTestName());
-        fileService.saveExcel(fileEntity.getTestName(),file,rowCnt,term,year,username);
+        fileService.saveExcel(fileEntity.getTestName(),file,term,year,username);
         fileRepository.delete(fileEntity);
     }
 

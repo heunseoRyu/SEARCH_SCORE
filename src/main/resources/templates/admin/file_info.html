@@ -6,16 +6,16 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <link rel="stylesheet" th:href="@{/css/file_info.css}"/>
 </head>
 <body>
     <a href="/">홈으로</a><br> <a href="/admin/my">이전으로</a> <br>
-    <h5>수정하기</h5>
+    <h3>수정하기</h3>
     <form th:action="@{/files/{id}(id=${file.id})}" method="post" enctype="multipart/form-data">
         <!-- 기본정보 입력 -->
 <!--        <input type="text" name="title" placeholder="title">-->
-        <input type="number" name="rowCnt" placeholder="열의 수(학년,반,번호 포함해서 계산)">
-        <input type="number" name="year" placeholder="년도(예:2024)">
-        <input type="number" name="term" placeholder="학기(1 or 2입력)">
+        <input th:field="*{file.year}" type="number" name="year" placeholder="년도(예:2024)">
+        <input th:field="*{file.term}" type="number" name="term" placeholder="학기(1 or 2입력)">
         <!-- 엑셀 파일 입력 -->
         <label for="file">수정한 엑셀 파일:</label>
         <input type="file" id="file" name="file" accept=".xlsx,.xls" required>

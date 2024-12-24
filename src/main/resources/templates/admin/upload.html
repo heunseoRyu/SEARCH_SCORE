@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" th:href="@{/css/upload.css}"/>
+</head>
+<body>
+    <a href="/">홈으로</a><br> <a href="/admin/my">이전으로</a> <br>
+    <h5>생성하기</h5>
+    <a th:href="@{/files/form}"></p> 양식 다운로드</a>
+    <form th:action="@{/files}" method="post" enctype="multipart/form-data">
+        <!-- 기본정보 입력 -->
+        <input type="text" name="title" placeholder="평가명">
+        <input type="number" name="year" placeholder="년도(예:2024)">
+        <input type="number" name="term" placeholder="학기(1 or 2입력)">
+
+        <!-- 엑셀 파일 입력 -->
+        <label for="file">엑셀 파일:</label>
+        <input type="file" id="file" name="file" accept=".xlsx,.xls" required>
+        <!-- 제출 버튼 -->
+        <button type="submit">업로드</button>
+    </form>
+</body>
+</html>

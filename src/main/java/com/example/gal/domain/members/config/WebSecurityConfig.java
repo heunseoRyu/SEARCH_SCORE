@@ -39,15 +39,19 @@ public class WebSecurityConfig {
                         .requestMatchers(
                                 new AntPathRequestMatcher("/auth/login"),
                                 new AntPathRequestMatcher("/auth/join"),
-                                new AntPathRequestMatcher("/")
+                                new AntPathRequestMatcher("/"),
+                                new AntPathRequestMatcher("/change-pw"),
+                                new AntPathRequestMatcher("/auth/change-pw"),
+                                new AntPathRequestMatcher("/auth/login-2")
                         ).permitAll()
-                        .requestMatchers("/admin/**").hasAuthority("ADMIN") // "/admin" 이하 모든 요청은 ADMIN 권한 필요
-                        .requestMatchers(HttpMethod.POST, "/files").hasAuthority("ADMIN") // POST 요청 /files는 ADMIN 권한 필요
-                        .requestMatchers(HttpMethod.GET,"/files/{id}/remove").hasAuthority("ADMIN")
-                        .requestMatchers(HttpMethod.GET,"files/search").authenticated()
-                        .requestMatchers(HttpMethod.POST, "/files/{id}").hasAuthority("ADMIN") // POST 요청 /files/{id}는 ADMIN 권한 필요
-                        .requestMatchers(HttpMethod.GET, "/files/{id}/scores/{key}").hasAuthority("STUDENT") // PATCH 요청 /files/{id}/scores/{key}는 STUDENT 권한 필요
-                        .requestMatchers(HttpMethod.GET, "/files/{id}").hasAuthority("ADMIN") // GET 요청 /files/{id}는 ADMIN 권한 필요
+                        .requestMatchers("/admin/**").hasAnyAuthority("ADMIN","TEACHER") // "/admin" 이하 모든 요청은 ADMIN 권한 필요
+                        .requestMatchers(HttpMethod.POST, "/files").hasAnyAuthority("ADMIN","TEACHER") // POST 요청 /files는 ADMIN 권한 필요
+                        .requestMatchers(HttpMethod.GET,"/files/{id}/remove").hasAnyAuthority("ADMIN","TEACHER")
+                        .requestMatchers(HttpMethod.GET,"files/search").hasAnyAuthority("ADMIN","TEACHER")
+                        .requestMatchers(HttpMethod.POST, "/files/{id}").hasAnyAuthority("ADMIN","TEACHER") // POST 요청 /files/{id}는 ADMIN 권한 필요
+                        .requestMatchers(HttpMethod.GET, "/files/{id}/scores/{key}").hasAnyAuthority("ADMIN","TEACHER") // PATCH 요청 /files/{id}/scores/{key}는 STUDENT 권한 필요
+                        .requestMatchers(HttpMethod.GET, "/files/{id}","files/upload","/users","/members/{id}/init-pw","members/{id}/delete","/members/{id}/allow").hasAnyAuthority("ADMIN","TEACHER") // GET 요청 /files/{id}는 ADMIN 권한 필요
+                        .requestMatchers("/all").hasAuthority("ADMIN")
                         .anyRequest().authenticated())
                 .formLogin(formLogin -> formLogin
                         .loginPage("/auth/login")

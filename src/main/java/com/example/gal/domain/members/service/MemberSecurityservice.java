@@ -25,6 +25,9 @@ public class MemberSecurityservice implements UserDetailsService {
         Member member = memberRepository.findByUsername(username)
                 .orElseThrow(() ->new UsernameNotFoundException("없는 사용자입니다.")) ;
 
+        if(!member.isAllowed())
+            throw new IllegalArgumentException("가입 승인받지 않은 계정입니다.");
+
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(member.getAuthority().getAuthority())); //Member 객체 안에 authorities 필드 저장 후 가져오기 (db에 권한 필드에 가져온다)
 

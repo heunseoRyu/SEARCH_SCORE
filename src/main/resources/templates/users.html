@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" th:href="@{/css/files.css}"/>
+</head>
+<body>
+    <a href="/">홈으로</a> <br>
+    1. 계정 삭제는 학생만 가능합니다. <br>
+    2. 비밀번호는 1234로 초기화됩니다. <br>
+    <table>
+        <tr>
+            <th>아이디</th><th>학년</th><th>반</th> <th>번호</th><th>권한</th><th>비번초기화</th><th>계정삭제</th><th>가입승인</th>
+        </tr>
+        <tr th:each="member : ${members}">
+            <td><p th:text="${member.username}"></p></td>
+            <td><p th:text="${member.grade}"></p></td>
+            <td><p th:text="${member.cls}"></p></td>
+            <td><p th:text="${member.num}"></p></td>
+            <td><p th:text="${member.authority}"></p></td>
+            <td><a th:href="@{/members/{id}/init-pw (id=${member.id})}">
+                비번초기화
+            </a></td>
+            <td><a th:href="@{/members/{id}/delete (id=${member.id})}">
+                계정삭제
+            </a></td>
+            <td><a th:href="@{/members/{id}/allow (id=${member.id})}" th:if="${member.isAllowed} == false">
+                승인
+            </a>
+                <p th:if="${member.isAllowed} == true">
+                    승인됨
+                </p></td>
+        </tr>
+    </table>
+</body>
+</html>
