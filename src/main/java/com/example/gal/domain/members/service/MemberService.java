@@ -12,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static com.example.gal.domain.members.domain.MemberRole.STUDENT;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(rollbackFor = Exception.class)
@@ -59,7 +61,10 @@ public class MemberService {
     }
 
     public void deleteMember(Long id) {
-        memberRepository.deleteById(id);
+        Member member = memberRepository.findById(id).orElse(null);
+        if(member.getAuthority() == STUDENT) {
+            memberRepository.deleteById(id);
+        }
     }
 
     public void allowMember(Long id) {
