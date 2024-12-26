@@ -11,7 +11,7 @@
 <body>
 <a href="/">홈으로</a> <br>
 <table>
-    <h3>내가 올린 평가결과들 </h3>
+    <h3>내가 올린 학생정보들 </h3>
     <br>
     <form th:action="@{/admin/my/search}" method="get" enctype="multipart/form-data">
         <input type="number" name="year" placeholder="년도(예:2024)">
@@ -21,7 +21,7 @@
         <a href="/admin/my">검색초기화</a> <br>
     </form>
     <tr>
-        <th>평가명</th><th>년도</th><th>학기</th><th>생성일</th><th>값조회</th><th>삭제</th>
+        <th>이름</th><th>년도</th><th>학기</th><th>생성일</th><th>값조회</th><th>삭제</th>
     </tr>
     <tr th:each="file : ${files}">
         <td><p th:text="${file.testName}"></p></td>
@@ -32,6 +32,6 @@
         <td><a th:href="@{/files/{id}/remove(id=${file.id})}">삭제</a></td>
     </tr>
 </table>
-<button th:onclick="|location.href='@{|/files/upload|}'|">평가 업로드</button> 평가결과를 업로드하세요!<br>
+<button th:onclick="|location.href='@{|/files/upload|}'|">업로드</button> 학생정보를 업로드하세요!<br>
 </body>
 </html>

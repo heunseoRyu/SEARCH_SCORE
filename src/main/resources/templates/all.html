@@ -13,7 +13,7 @@
     <a href="/">홈으로</a>
     <h3>현재 올라온 모든 평가</h3>
     <tr>
-        <th>평가명</th><th>년도</th><th>학기</th><th>생성일</th><th>값조회</th><th>삭제</th>
+        <th>이름</th><th>년도</th><th>학기</th><th>생성일</th><th>값조회</th><th>삭제</th>
     </tr>
     <tr th:each="file : ${files}">
         <td><p th:text="${file.testName}"></p></td>

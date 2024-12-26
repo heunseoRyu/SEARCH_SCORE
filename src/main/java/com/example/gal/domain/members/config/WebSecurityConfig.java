@@ -3,6 +3,7 @@ package com.example.gal.domain.members.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -58,7 +59,11 @@ public class WebSecurityConfig {
                         .defaultSuccessUrl("/")
                         .failureHandler((request, response, exception) -> {
                             // 로그인 실패 시 커스텀 로직
-                            request.getSession().setAttribute("errorMessage", exception.getMessage());
+                            if (exception instanceof BadCredentialsException) {
+                                request.getSession().setAttribute("errorMessage", "아이디 또는 비밀번호가 잘못되었습니다.");
+                            } else {
+                                request.getSession().setAttribute("errorMessage", exception.getMessage());
+                            }
                             response.sendRedirect("/auth/login?error=true");
                         }))
                 .logout(logout -> logout

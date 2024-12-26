@@ -8,14 +8,7 @@
   <link rel="stylesheet" th:href="@{/css/i.css}" />
 </head>
 <body>
-<h1>대소마고 성적조회 사이트입니다.</h1>
-<p>
-  3가지 목표를 갖고 있습니다. <br>
-  1. 빠른 성적조회 <br>
-  2. 종이 서명과정 생략 <br>
-  3. 개인성적 유출 방지 <br>
-  made by 칠판당면 <br>
-</p>
+<h1>개별 학생정보 조회 사이트입니다.</h1>
 <div sec:authorize="isAnonymous()">
   <a href="/auth/login" class="id1">로그인</a>
   <a href="/auth/join" class="id1">회원가입</a>
@@ -27,5 +20,8 @@
   <a href="/all" th:if="${isAdmin}">모든 게시물 관리</a>
   <a href="/auth/logout" id="logout-button">로그아웃</a>
 </div>
+<p style="position: fixed; bottom: 0; width: 100%; text-align: center; margin: 0;">
+  made by 칠판당면 <br>
+</p>
 </body>
 </html>

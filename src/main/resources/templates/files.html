@@ -19,14 +19,14 @@
         <a href="/files">검색초기화</a> <br>
     </form>
     <tr>
-        <th>시험이름</th> <th>년도</th><th>학기</th><th>업로드</th> <th>성적조회</th>
+        <th>이름</th> <th>년도</th><th>학기</th><th>업로드</th> <th>정보조회</th>
     </tr>
     <tr th:each="file : ${files}">
         <td><p th:text="${file.testName}"></p></td>
         <td><p th:text="${file.year}"></p></td>
         <td><p th:text="${file.term}"></p></td>
         <td><p th:text="${#temporals.format(file.createTime, 'yy/MM/dd ahh:mm')}"></p></td>
-        <td><a th:href="@{/files/{id}/result(id=${file.id})}"></p>성적조회</a></td> <!--||를 통해 스트링 합성 가능-> pathVariable사용-->
+        <td><a th:href="@{/files/{id}/result(id=${file.id})}"></p>정보조회</a></td> <!--||를 통해 스트링 합성 가능-> pathVariable사용-->
     </tr>
 </table>
 </body>
