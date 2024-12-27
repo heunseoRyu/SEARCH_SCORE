@@ -33,6 +33,8 @@ public class Member {
     @Column(nullable = false)
     private String password;
 
+    private String name;
+
     private Integer grade;
 
     private Integer cls;

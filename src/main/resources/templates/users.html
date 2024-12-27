@@ -14,10 +14,11 @@
     2. 비밀번호는 1234로 초기화됩니다. <br>
     <table>
         <tr>
-            <th>아이디</th><th>학년</th><th>반</th> <th>번호</th><th>권한</th><th>비번초기화</th><th>계정삭제</th><th>가입승인</th>
+            <th>아이디</th><th>이름</th><th>학년</th><th>반</th> <th>번호</th><th>권한</th><th>비번초기화</th><th>계정삭제</th><th>가입승인</th>
         </tr>
         <tr th:each="member : ${members}">
             <td><p th:text="${member.username}"></p></td>
+            <td><p th:text="${member.name}"></p></td>
             <td><p th:text="${member.grade}"></p></td>
             <td><p th:text="${member.cls}"></p></td>
             <td><p th:text="${member.num}"></p></td>

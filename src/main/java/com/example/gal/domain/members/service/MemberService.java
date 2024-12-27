@@ -2,6 +2,7 @@ package com.example.gal.domain.members.service;
 
 import com.example.gal.domain.members.domain.Member;
 import com.example.gal.domain.members.dto.AddMemberRequest;
+import com.example.gal.domain.members.dto.AddMemberRequest2;
 import com.example.gal.domain.members.dto.AddMemberResponse;
 import com.example.gal.domain.members.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,11 @@ public class MemberService {
         if(memberRepository.existsByGradeAndClsAndNum(request.getGrade(),request.getCls(), request.getNum())) {
             throw new IllegalArgumentException();
         }
+        return new AddMemberResponse(memberRepository.save(request.toEntity(encodedPassword)));
+    }
+
+    public AddMemberResponse addMember(AddMemberRequest2 request) {
+        String encodedPassword = passwordEncoder.encode(request.getPassword());
         return new AddMemberResponse(memberRepository.save(request.toEntity(encodedPassword)));
     }
 

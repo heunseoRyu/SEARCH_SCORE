@@ -1,19 +1,17 @@
 package com.example.gal.domain.members.controller;
 
 import com.example.gal.domain.members.dto.AddMemberRequest;
+import com.example.gal.domain.members.dto.AddMemberRequest2;
 import com.example.gal.domain.members.dto.ChangePasswordRequest;
 import com.example.gal.domain.members.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Objects;
 
@@ -32,6 +30,11 @@ public class AuthController {
     @GetMapping("/join")
     public String join( AddMemberRequest request) { //join.html 을 사용하는곳에 모두.
         return "join";
+    } //ui 렌더링
+
+    @GetMapping("/join-2")
+    public String join2( AddMemberRequest2 request) { //join.html 을 사용하는곳에 모두.
+        return "join-2";
     } //ui 렌더링
 
     @PostMapping("/join")
@@ -53,6 +56,30 @@ public class AuthController {
             return "join";
         }catch(IllegalArgumentException ignored){
             result.reject("duplicated", "사용중인 학번입니다.");
+            return "join";
+        }catch (Exception e) {
+            result.reject("error", e.getMessage());
+            return "join";
+        }
+        return "redirect:/"; //index
+    } //db에 추가
+
+    @PostMapping("/join-2")
+    public String join(
+            @Valid AddMemberRequest2 request,
+            BindingResult result //@Valid BindingResult 는 꼭 붙어있어야해.
+    ) {
+        if (result.hasErrors()) { //valid 에 이러가 없으면
+            return "join";
+        }
+        if(!Objects.equals(request.getPassword(),request.getPassword2())) {
+            result.reject("pwNotSame","새 비번과 확인란의 값이 동일하지 않습니다.");
+            return "change-pw";
+        }
+        try {
+            memberService.addMember(request);
+        }catch (DataIntegrityViolationException e) {
+            result.reject("duplicated", "사용중인 Username입니다.");
             return "join";
         }catch (Exception e) {
             result.reject("error", e.getMessage());

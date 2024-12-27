@@ -43,7 +43,8 @@ public class WebSecurityConfig {
                                 new AntPathRequestMatcher("/"),
                                 new AntPathRequestMatcher("/change-pw"),
                                 new AntPathRequestMatcher("/auth/change-pw"),
-                                new AntPathRequestMatcher("/auth/login-2")
+                                new AntPathRequestMatcher("/auth/login-2"),
+                                new AntPathRequestMatcher("/auth/join-2")
                         ).permitAll()
                         .requestMatchers("/admin/**").hasAnyAuthority("ADMIN","TEACHER") // "/admin" 이하 모든 요청은 ADMIN 권한 필요
                         .requestMatchers(HttpMethod.POST, "/files").hasAnyAuthority("ADMIN","TEACHER") // POST 요청 /files는 ADMIN 권한 필요

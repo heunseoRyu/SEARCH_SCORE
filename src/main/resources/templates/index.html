@@ -11,7 +11,8 @@
 <h1>개별 학생정보 조회 사이트입니다.</h1>
 <div sec:authorize="isAnonymous()">
   <a href="/auth/login" class="id1">로그인</a>
-  <a href="/auth/join" class="id1">회원가입</a>
+  <a href="/auth/join" class="id1">학생 회원가입</a>
+  <a href="/auth/join-2" class="id1">선생님 회원가입</a>
 </div>
 <div class="container sec-authorize" sec:authorize="isAuthenticated()">
   <a href="/files">결과 조회(학생)</a>
